@@ -26,3 +26,49 @@ your bot to your server. <br>
   You need to **ENABLE** all of the settings to make the bot works<br><br>
   ![image](https://github.com/user-attachments/assets/48fc5555-12b1-48b0-8026-c161db6da5fa)
 
+- Buttons <br>
+first o first you need to install additional pacakge to makes this work
+install this package :
+```bash
+$ pip install git+https://github.com/Rapptz/discord.py.git@master
+```
+<br>
+After it, add this code to your command code
+
+```py
+@bot.command()
+async def button(ctx):
+  view = discord.ui.View()
+  item = discord.ui.Button(style=discord.ButtonStyle.blurple, label="Click Me", url="https://google.com")
+  view.add_item(item=item)
+  await ctx.send("This message has a button!", view=view)
+```
+
+or maybe some complicated one like this :
+```py
+# Define a simple View that gives us a confirmation menu
+class Confirm(discord.ui.View):
+    def __init__(self):
+        super().__init__()
+        self.value = None
+
+    # When the confirm button is pressed, set the inner value to `True` and
+    # stop the View from listening to more input.
+    # We also send the user an ephemeral message that we're confirming their choice.
+    @discord.ui.button(label='Confirm', style=discord.ButtonStyle.green)
+    async def confirm(self, interaction: discord.Interaction, button: discord.ui.Button):
+        await interaction.response.send_message('Confirming', ephemeral=True)
+        self.value = True
+        self.stop()
+
+    # This one is similar to the confirmation button except sets the inner value to `False`
+    @discord.ui.button(label='Cancel', style=discord.ButtonStyle.grey)
+    async def cancel(self, interaction: discord.Interaction, button: discord.ui.Button):
+        await interaction.response.send_message('Cancelling', ephemeral=True)
+        self.value = False
+        self.stop()
+```
+
+on this particular code, we subtract the `@discord.ui.button`.
+
+you could find other example on : [https://github.com/Rapptz/discord.py/tree/master/examples/views](https://github.com/Rapptz/discord.py/tree/master/examples/views)
